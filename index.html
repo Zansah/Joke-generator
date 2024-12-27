@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Joke Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: #fff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .joke-container {
+            background: #222;
+            width: 350px;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .header img {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+        }
+
+        .header button {
+            background-color: #1da1f2;
+            border: none;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: background 0.3s ease;
+        }
+
+        .header button:hover {
+            background-color: #1a91da;
+        }
+
+        .tweet {
+            font-size: 1.1em;
+            line-height: 1.4;
+            margin: 20px 0;
+            color: #f0f0f0;
+        }
+
+        .loading {
+            color: #aaa;
+            font-size: 0.9em;
+        }
+
+        .footer {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            font-size: 0.9em;
+            color: #aaa;
+        }
+
+        .footer span {
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="joke-container">
+        <div class="header">
+            <div style="display: flex; align-items: center;">
+                <img src="kermit.jpg" alt="User Avatar">
+                <span style="margin-left: 10px;">@Kermit</span>
+            </div>
+            <button id="generate-joke-button">Follow</button>
+        </div>
+        <div id="joke" class="tweet">
+            Click "Follow" to get a random joke!
+        </div>
+        <div id="loading" class="loading" style="display: none;">
+            Loading...
+        </div>
+        <div class="footer">
+            <span>❤️ 5.6K</span>
+            <span>💬 1.2K</span>
+            <span>🔄 2.3K</span>
+        </div>
+    </div>
+    <script>
+        const jokeContainer = document.getElementById('joke');
+        const generateButton = document.getElementById('generate-joke-button');
+        const loading = document.getElementById('loading');
+
+        async function fetchJoke() {
+            try {
+                loading.style.display = 'block';
+                jokeContainer.style.display = 'none';
+
+                const response = await fetch('https://icanhazdadjoke.com/', {
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+                const data = await response.json();
+
+                jokeContainer.innerText = data.joke;
+                jokeContainer.style.display = 'block';
+            } catch (error) {
+                jokeContainer.innerText = 'Oops! Something went wrong.';
+            } finally {
+                loading.style.display = 'none';
+            }
+        }
+
+        generateButton.addEventListener('click', fetchJoke);
+    </script>
+</body>
+</html>
